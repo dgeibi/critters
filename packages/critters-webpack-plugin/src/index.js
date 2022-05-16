@@ -19,7 +19,7 @@ import { createRequire } from 'module';
 import minimatch from 'minimatch';
 import sources from 'webpack-sources';
 import log from 'webpack-log';
-import Critters from 'critters';
+import Critters from '@dgeibi/critters';
 import { tap } from './util';
 
 const $require =
@@ -30,7 +30,7 @@ const $require =
 // Used to annotate this plugin's hooks in Tappable invocations
 const PLUGIN_NAME = 'critters-webpack-plugin';
 
-/** @typedef {import('critters').Options} Options */
+/** @typedef {import('@dgeibi/critters').Options} Options */
 
 /**
  * Create a Critters plugin instance with the given options.
