@@ -57,6 +57,8 @@ export interface Options {
   logLevel?: 'info' | 'warn' | 'error' | 'trace' | 'debug' | 'silent';
   reduceInlineStyles?: boolean;
   logger?: Logger;
+  beforeProcess?: (document: Document) => void;
+  beforeSerialize?:(document: Document) => void;
 }
 
 export interface Logger {

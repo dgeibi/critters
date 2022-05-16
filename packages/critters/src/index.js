@@ -110,6 +110,8 @@ import { createLogger } from './util';
  * @property {Boolean} compress     Compress resulting critical CSS _(default: `true`)_
  * @property {String} logLevel      Controls {@link LogLevel log level} of the plugin _(default: `"info"`)_
  * @property {object} logger        Provide a custom logger interface {@link Logger logger}
+ * @property {(document: Document) => void} beforeProcess
+ * @property {(document: Document) => void} beforeSerialize
  */
 
 export default class Critters {
@@ -162,6 +164,10 @@ export default class Critters {
     // Parse the generated HTML in a DOM we can mutate
     const document = createDocument(html);
 
+    if (this.options.beforeProcess) {
+      this.options.beforeProcess(document);
+    }
+
     if (this.options.additionalStylesheets.length > 0) {
       this.embedAdditionalStylesheet(document);
     }
@@ -186,6 +192,10 @@ export default class Critters {
 
     if (this.options.mergeStylesheets !== false && styles.length !== 0) {
       await this.mergeStylesheets(document);
+    }
+
+    if (this.options.beforeSerialize) {
+      this.options.beforeSerialize(document);
     }
 
     // serialize the document back to HTML and we're done
