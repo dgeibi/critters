@@ -36,6 +36,8 @@ export default class Critters {
    * Overriding this method requires doing your own URL normalization, so it's generally better to override `readFile()`.
    */
   getCssAsset(href: string): Promise<string | undefined> | string | undefined;
+
+  getExternalCriticalCss(html: string): Promise<{href:string; textContent:string;}[]>
 }
 
 export interface Options {

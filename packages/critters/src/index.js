@@ -205,6 +205,15 @@ export default class Critters {
     return output;
   }
 
+  async getExternalCriticalCss(html) {
+    const document = createDocument(html);
+    const externalSheets = [].slice.call(document.querySelectorAll('link[rel="stylesheet"]'));
+    await Promise.all(externalSheets.map(link => this.embedLinkedStylesheet(link, document)));
+    const styles = [].slice.call(document.querySelectorAll('style')).filter(x => x.$$name);
+    await Promise.all(styles.map(style => this.processStyle(style, document)));
+    return styles.map(style => ({ href: style.name, textContent: style.textContent }));
+  }
+
   /**
    * Get the style tags that need processing
    */
@@ -562,7 +571,7 @@ export default class Critters {
       applyMarkedSelectors(rule);
 
       // prune @keyframes rules
-      if (rule.type === 'atrule' && rule.name === 'keyframes') {
+      if (rule.type === 'atrule' && (rule.name === 'keyframes' || rule.name === '-webkit-keyframes')) {
         if (keyframesMode === 'none') return false;
         if (keyframesMode === 'all') return true;
         return criticalKeyframeNames.indexOf(rule.params) !== -1;
