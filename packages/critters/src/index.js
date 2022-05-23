@@ -211,7 +211,7 @@ export default class Critters {
     await Promise.all(externalSheets.map(link => this.embedLinkedStylesheet(link, document)));
     const styles = [].slice.call(document.querySelectorAll('style')).filter(x => x.$$name);
     await Promise.all(styles.map(style => this.processStyle(style, document)));
-    return styles.map(style => ({ href: style.name, textContent: style.textContent }));
+    return styles.map(style => ({ href: style.$$name, textContent: style.textContent }));
   }
 
   /**
